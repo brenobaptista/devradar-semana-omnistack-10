@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Dev = require('../models/Dev');
 const parseStringAsArray = require('../utils/parseStringAsArray');
+const parseCoordinatesAsLocation = require('../utils/parseCoordinatesAsLocation');
 
 module.exports = {
   async index(req, res) {
@@ -22,10 +23,7 @@ module.exports = {
     
       const techsArray = parseStringAsArray(techs);
     
-      const location = {
-        type: 'Point',
-        coordinates: [longitude, latitude],
-      }
+      const location = parseCoordinatesAsLocation(longitude, latitude);
     
       dev = await Dev.create({
         github_username,
@@ -53,10 +51,7 @@ module.exports = {
     }
 
     if (latitude && longitude) {
-      const location = {
-        type: 'Point',
-        coordinates: [longitude, latitude],
-      }
+      const location = parseCoordinatesAsLocation(longitude, latitude);
       editedDev.location = location;
     } else {
       editedDev.location = editedDev.location;
